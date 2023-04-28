@@ -7,7 +7,7 @@ function redirect($path)
 }
 function asset($file)
 {
-    return trim(BASE_URL, '/ ') . '/' . trim($file, '/ ');
+    return trim(BASE_URL, '/ ') . '/' . "assets/" .  trim($file, '/ ');
 }
 function dd($var)
 {
