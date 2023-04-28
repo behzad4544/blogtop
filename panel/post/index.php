@@ -29,7 +29,7 @@ $posts = $statement->fetchAll();
                 <section class="col-md-10 pt-3">
                     <section class="mb-2 d-flex justify-content-between align-items-center">
                         <h2 class="h4">Articles</h2>
-                        <a href="create.php" class="btn btn-sm btn-success">Create</a>
+                        <a href="<?= url("panel/post/create.php") ?>" class="btn btn-sm btn-success">Create</a>
                     </section>
 
                     <section class="table-responsive">
@@ -47,21 +47,22 @@ $posts = $statement->fetchAll();
                             </thead>
                             <tbody>
                                 <?php foreach ($posts as $post) : ?>
-                                    <tr>
-                                        <td><?= $post->id ?></td>
-                                        <td><img style="width: 90px;" src="<?= $post->image ?>"></td>
-                                        <td><?= $post->title ?></td>
-                                        <td><?= $post->catName ?></td>
-                                        <td><?= substr($post->body, 0, 30) . " ..." ?></td>
-                                        <td><span class="text-success"><?= ($post->status == "10") ? "enable" : "" ?></span>
-                                            <span class="text-danger"><?= ($post->status != "10") ? "enable" : "" ?></span>
-                                        </td>
-                                        <td>
-                                            <a href="" class="btn btn-warning btn-sm">Change status</a>
-                                            <a href="" class="btn btn-info btn-sm">Edit</a>
-                                            <a href="" class="btn btn-danger btn-sm">Delete</a>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td><?= $post->id ?></td>
+                                    <td><img style="width: 90px;"
+                                            src="<?= asset("images/posts/") . "/" . $post->image ?>"></td>
+                                    <td><?= $post->title ?></td>
+                                    <td><?= $post->catName ?></td>
+                                    <td><?= substr($post->body, 0, 30) . " ..." ?></td>
+                                    <td><span class="text-success"><?= ($post->status == "10") ? "enable" : "" ?></span>
+                                        <span class="text-danger"><?= ($post->status != "10") ? "enable" : "" ?></span>
+                                    </td>
+                                    <td>
+                                        <a href="" class="btn btn-warning btn-sm">Change status</a>
+                                        <a href="" class="btn btn-info btn-sm">Edit</a>
+                                        <a href="" class="btn btn-danger btn-sm">Delete</a>
+                                    </td>
+                                </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
