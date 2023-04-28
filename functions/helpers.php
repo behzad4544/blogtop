@@ -9,6 +9,10 @@ function asset($file)
 {
     return trim(BASE_URL, '/ ') . '/' . "assets/" .  trim($file, '/ ');
 }
+function url($url)
+{
+    return trim(BASE_URL, '/ ') . '/' . trim($url, '/ ');
+}
 function dd($var)
 {
     echo "<pre>";
