@@ -1,5 +1,6 @@
 <?php
 require "../../functions/helpers.php";
+require "../../functions/check-login.php";
 require "../../functions/pdo_connection.php";
 global $db;
 $sql = "SELECT * FROM `categories`";
@@ -21,11 +22,12 @@ if (isset($_POST['submit']) && isset($_POST['title']) && !(empty($_POST['title']
     $allowExt = ["jpg", "png", "jpeg"];
     $tmp = $_FILES['image']['tmp_name'];
     $allowSize = 5 * 1024 * 1024;
-    $dis = "C:\\xampp\htdocs\blogtop\assets\images\posts\\" . $NewFileName;
+    $dir = dirname(dirname(__DIR__));
+    $dis = $dir . "/assets/images/posts/" . $NewFileName;
     if (in_array($ext, $allowExt) && $_FILES['image']['size'] < $allowSize && $_FILES['image']['size'] > 0 && $catt) {
         global $db;
         move_uploaded_file($tmp, $dis);
-        $sql2 = "INSERT INTO posts (title,body,cat_id,image) VALUES (?,?,?,?)";
+        $sql2 = "INSERT INTO `posts` SET title=?,body=?,cat_id=?,image=? ";
         $statment3 = $db->prepare($sql2);
         $statment3->execute([$title, $body, $cat_id, $NewFileName]);
     }
@@ -69,13 +71,14 @@ if (isset($_POST['submit']) && isset($_POST['title']) && !(empty($_POST['title']
                             <select class="form-control" name="cat_id" id="cat_id">
                                 <option>Please Select One Category</option>
                                 <?php foreach ($categories as $category) : ?>
-                                    <option value="<?= $category->id ?>"><?= $category->name ?></option>
+                                <option value="<?= $category->id ?>"><?= $category->name ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </section>
                         <section class="form-group">
                             <label for="body">Body</label>
-                            <textarea class="form-control" name="body" id="body" rows="5" placeholder="body ..."></textarea>
+                            <textarea class="form-control" name="body" id="body" rows="5"
+                                placeholder="body ..."></textarea>
                         </section>
                         <section class="form-group">
                             <button type="submit" name="submit" class="btn btn-primary">Create</button>

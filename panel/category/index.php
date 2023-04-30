@@ -1,5 +1,6 @@
 <?php
 require "../../functions/helpers.php";
+require "../../functions/check-login.php";
 require "../../functions/pdo_connection.php";
 global $db;
 $sql = "SELECT * FROM `categories`";

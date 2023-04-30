@@ -1,5 +1,6 @@
 <?php
 require "../../functions/helpers.php";
+require "../../functions/check-login.php";
 require "../../functions/pdo_connection.php";
 global $db;
 if (!isset($_GET['id']) && $_GET['id'] == "") {
@@ -37,16 +38,19 @@ if (isset($_POST['submit']) && isset($_POST['title']) && !(empty($_POST['title']
         $allowExt = ["jpg", "png", "jpeg"];
         $tmp = $_FILES['image']['tmp_name'];
         $allowSize = 5 * 1024 * 1024;
-        $dis = "C:\\xampp\htdocs\blogtop\assets\images\posts\\" . $NewFileName;
+        $dir = dirname(dirname(__DIR__));
+        $dis = $dir . "/assets/images/posts/" . $NewFileName;
         if (in_array($ext, $allowExt) && $_FILES['image']['size'] < $allowSize && $_FILES['image']['size'] > 0) {
             $move = move_uploaded_file($tmp, $dis);
             $image = $NewFileName;
-            unlink("C:\\xampp\htdocs\blogtop\assets\images\posts\\" . $posts->image);
+            if (file_exists($dir . "/assets/images/posts/"  . $posts->image)) {
+                unlink($dir . "/assets/images/posts/"  . $posts->image);
+            }
         }
     } else {
         $image = $posts->image;
     }
-    if ($move != false && $catt != false) {
+    if ($catt != false) {
         $sql3 = "UPDATE posts SET title = ?,body = ?,cat_id = ?,image = ?,updated_at=NOW() WHERE id = ?";
         $statment4 = $db->prepare($sql3);
         $statment4->execute([$title, $body, $cat_id, $image, $posts->id]);

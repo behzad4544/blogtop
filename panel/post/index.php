@@ -1,5 +1,6 @@
 <?php
 require "../../functions/helpers.php";
+require "../../functions/check-login.php";
 require "../../functions/pdo_connection.php";
 global $db;
 $sql = "SELECT posts.*, categories.name AS catName FROM `posts` LEFT JOIN `categories` ON posts.cat_id = categories.id";
@@ -49,17 +50,18 @@ $posts = $statement->fetchAll();
                                 <?php foreach ($posts as $post) : ?>
                                     <tr>
                                         <td><?= $post->id ?></td>
-                                        <td><img style="width: 90px;" src="<?= asset("images/posts/") . "/" . $post->image ?>"></td>
+                                        <td><img style="width: 90px;" src="<?= asset("images/posts/") . "/" . $post->image ?>">
+                                        </td>
                                         <td><?= $post->title ?></td>
                                         <td><?= $post->catName ?></td>
                                         <td><?= substr($post->body, 0, 30) . " ..." ?></td>
                                         <td><span class="text-success"><?= ($post->status == "10") ? "enable" : "" ?></span>
-                                            <span class="text-danger"><?= ($post->status != "10") ? "enable" : "" ?></span>
+                                            <span class="text-danger"><?= ($post->status != "10") ? "disable" : "" ?></span>
                                         </td>
                                         <td>
-                                            <a href="" class="btn btn-warning btn-sm">Change status</a>
+                                            <a href="<?= url("panel/post/change_status.php?id=") . $post->id  ?>" class="btn btn-warning btn-sm">Change status</a>
                                             <a href="<?= url("panel/post/edit.php?id=") . $post->id  ?>" class="btn btn-info btn-sm">Edit</a>
-                                            <a href="" class="btn btn-danger btn-sm">Delete</a>
+                                            <a href="<?= url("panel/post/delete.php?id=") . $post->id  ?>" class="btn btn-danger btn-sm">Delete</a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

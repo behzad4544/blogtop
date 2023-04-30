@@ -1,15 +1,16 @@
 <?php
 require "../../functions/helpers.php";
+require "../../functions/check-login.php";
 require "../../functions/pdo_connection.php";
 global $db;
 $errors = [];
 if (isset($_POST['submit']) && isset($_POST['name']) && !(empty($_POST['name']))) {
     if (strlen($_POST['name']) > 3) {
         $name = $_POST['name'];
-        $sql = "INSERT INTO `categories` (name) values (?)";
+        $sql = "INSERT INTO `categories` SET name = ?";
         $statment = $db->prepare($sql);
         $statment->execute([$name]);
-        redirect("panel/category/index.php");
+        redirect("panel/category/");
     } else {
         $errors[] = "Invalid name provided";
     }

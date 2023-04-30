@@ -1,5 +1,7 @@
 <?php
 require "../functions/helpers.php";
+require "../functions/check-login.php";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
