@@ -33,15 +33,16 @@ $posts = $statment->fetchAll();
                         <section class="mb-2 overflow-hidden" style="max-height: 15rem;"><img class="img-fluid" src="<?= pic($post->image) ?>" alt=""></section>
                         <h2 class="h5 text-truncate"><?= $post->title ?></h2>
                         <p><?= $post->body ?></p>
-                        <p><a class="btn btn-primary" href="" role="button">View details »</a></p>
+                        <p><a class="btn btn-primary" href="<?= url("detail.php") . "?id=" . $post->id ?>" role="button">View
+                                details »</a></p>
                     </section>
                 <?php endforeach; ?>
 
             </section>
         </section>
     </section>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="<?= asset("js/bootstrap.min.js") ?>"></script>
+    <script src="<?= asset("js/jquery.min.js") ?>"></script>
 </body>
 
 </html>

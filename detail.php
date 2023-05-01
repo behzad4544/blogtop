@@ -1,6 +1,15 @@
 <?php
-require "./functions/helpers.php";
-require "./functions/pdo_connection.php";
+require "functions/helpers.php";
+require "functions/pdo_connection.php";
+global $db;
+if (!isset($_GET['id']) && empty($_GET['id'])) {
+    redirect("index.php");
+}
+$sql = "SELECT posts.*,categories.name AS catName FROM posts JOIN categories ON posts.cat_id = categories.id WHERE posts.status= 10 AND posts.id = ?";
+$statment = $db->prepare($sql);
+$statment->execute([$_GET['id']]);
+$post = $statment->fetch();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,28 +24,32 @@ require "./functions/pdo_connection.php";
 
 <body>
     <section id="app">
+        <?php require_once "layouts/top-nav.php" ?>
 
         <section class="container my-5">
             <!-- Example row of columns -->
             <section class="row">
-                <section class="col-md-12">
-                    <h1>title</h1>
-                    <h5 class="d-flex justify-content-between align-items-center">
-                        <a href="">name</a>
-                        <span class="date-time">22/22/33</span>
-                    </h5>
-                    <article class="bg-article p-3"><img class="float-right mb-2 ml-2" style="width: 18rem;" src=""
-                            alt="">body</article>
+                <?php if ($post == true) : ?>
+                    <section class="col-md-12">
+                        <h1><?= $post->title ?></h1>
+                        <h5 class="d-flex justify-content-between align-items-center">
+                            <a href="<?= url("category.php") . "?cat_id=" . $post->cat_id  ?>"><?= $post->catName ?></a>
+                            <span class="date-time"><?= $post->created_at ?></span>
+                        </h5>
+                        <article class="bg-article p-3"><img class="float-right mb-2 ml-2" style="width: 18rem;" src="<?= pic($post->image) ?>" alt=""><?= $post->body ?></article>
+                    <?php endif; ?>
 
-                    <section>post not found!</section>
+                    <?php if ($post === false) : ?>
 
-                </section>
+                        <section>post not found!</section>
+                    <?php endif; ?>
+                    </section>
             </section>
         </section>
 
     </section>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="<?= asset("js/bootstrap.min.js") ?>"></script>
+    <script src="<?= asset("js/jquery.min.js") ?>"></script>
 </body>
 
 </html>
